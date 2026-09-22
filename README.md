@@ -1,4 +1,4 @@
-# Star Scoop (Game01 v0.1)
+# Star Scoop (Game01 v0.1.1)
 
 11–13 岁向太空收集小游戏：俯视开飞船 scoop 能量块，躲开小行星，通关 3 关。
 
@@ -6,7 +6,7 @@
 
 Public play: [https://peterlei853.github.io/GorkBot-Game/](https://peterlei853.github.io/GorkBot-Game/)
 
-Pages serves this repo from the **main** branch root (`index.html`). After the first enable, the site can take a minute to go live.
+Pages serves **v0.1.1** (main-loop fix) from the **main** branch root (`index.html`). After the first enable, the site can take a minute to go live.
 
 ## 怎么玩
 
