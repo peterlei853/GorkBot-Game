@@ -8,7 +8,13 @@ window.Asteroid = function (x, y, speedScale) {
   this.vy = Math.sin(ang) * spd;
   this.rot = Math.random() * Math.PI * 2;
   this.spin = (Math.random() - 0.5) * 2;
+  this.hp = Rules.ASTEROID_HP;
+  this.alive = true;
+  this.contacting = false;
+  this.id = Asteroid._nextId++;
 };
+
+Asteroid._nextId = 1;
 
 Asteroid.prototype.update = function (dt, bounds) {
   this.x += this.vx * dt;
@@ -21,6 +27,7 @@ Asteroid.prototype.update = function (dt, bounds) {
 };
 
 Asteroid.prototype.draw = function (ctx) {
+  if (!this.alive) return;
   ctx.save();
   ctx.translate(this.x, this.y);
   ctx.rotate(this.rot);
