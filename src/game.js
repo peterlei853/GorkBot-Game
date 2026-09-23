@@ -173,9 +173,23 @@ Game.prototype._spawnEnergies = function (n) {
   }
 };
 
+Game.prototype._tooCloseToAsteroid = function (x, y) {
+  for (var i = 0; i < this.asteroids.length; i++) {
+    var a = this.asteroids[i];
+    if (!a.alive) continue;
+    if (Math.hypot(x - a.x, y - a.y) < a.r + 52) return true;
+  }
+  return false;
+};
+
 Game.prototype._spawnAsteroids = function (n, speedScale) {
   for (var i = 0; i < n; i++) {
-    var p = this._safeSpot(100);
+    var p = this._safeSpot(110);
+    var guard = 0;
+    while (guard < 16 && this._tooCloseToAsteroid(p.x, p.y)) {
+      p = this._safeSpot(110);
+      guard++;
+    }
     this.asteroids.push(new Asteroid(p.x, p.y, speedScale));
   }
 };
