@@ -1,10 +1,11 @@
 {
   "name": "star-scoop-game01",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "private": true,
   "description": "Game01 Star Scoop — collect energy crystals in space",
   "scripts": {
     "serve": "npx --yes serve . -p 5173",
-    "start": "npm run serve"
+    "start": "npm run serve",
+    "test": "node test/rules.test.js"
   }
 }

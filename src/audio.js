@@ -1,4 +1,4 @@
-/* Lightweight procedural BGM via Web Audio — no external files needed */
+/* Lightweight procedural BGM + SFX via Web Audio — no external files. */
 window.GameAudio = (function () {
   var ctx = null;
   var master = null;
@@ -7,21 +7,25 @@ window.GameAudio = (function () {
   var intervalId = null;
   var step = 0;
 
-  // Cheerful major-ish arpeggio (C major-ish pattern)
   var NOTES = [261.63, 329.63, 392.0, 523.25, 392.0, 329.63, 293.66, 349.23];
 
   function ensure() {
     if (ctx) return;
     var AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return;
-    ctx = new AC();
-    master = ctx.createGain();
-    master.gain.value = muted ? 0 : 0.22;
-    master.connect(ctx.destination);
+    try {
+      ctx = new AC();
+      master = ctx.createGain();
+      master.gain.value = muted ? 0 : 0.22;
+      master.connect(ctx.destination);
+    } catch (err) {
+      ctx = null;
+      master = null;
+    }
   }
 
   function beep(freq, dur, type) {
-    if (!ctx || muted) return;
+    if (!ctx || !master || muted) return;
     var o = ctx.createOscillator();
     var g = ctx.createGain();
     o.type = type || "triangle";
@@ -32,6 +36,23 @@ window.GameAudio = (function () {
     var t = ctx.currentTime;
     g.gain.exponentialRampToValueAtTime(0.55, t + 0.02);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.start(t);
+    o.stop(t + dur + 0.02);
+  }
+
+  function slide(freq, freq2, dur, type, gain) {
+    if (!ctx || !master || muted) return;
+    var o = ctx.createOscillator();
+    var g = ctx.createGain();
+    o.type = type || "square";
+    var t = ctx.currentTime;
+    o.frequency.setValueAtTime(freq, t);
+    o.frequency.exponentialRampToValueAtTime(Math.max(1, freq2), t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(gain || 0.35, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g);
+    g.connect(master);
     o.start(t);
     o.stop(t + dur + 0.02);
   }
@@ -79,10 +100,25 @@ window.GameAudio = (function () {
       this.unlock();
       beep(880, 0.1, "sine");
     },
-    sfxHit: function () {
+    sfxImpact: function () {
       ensure();
       this.unlock();
-      beep(120, 0.25, "sawtooth");
+      slide(210, 48, 0.12, "square", 0.42);
+    },
+    sfxShoot: function () {
+      ensure();
+      this.unlock();
+      beep(740, 0.05, "square");
+    },
+    sfxBeam: function () {
+      ensure();
+      this.unlock();
+      slide(180, 880, 0.22, "sawtooth", 0.28);
+    },
+    sfxBreak: function () {
+      ensure();
+      this.unlock();
+      beep(160, 0.08, "triangle");
     }
   };
 })();
