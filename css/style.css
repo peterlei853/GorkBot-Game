@@ -49,10 +49,10 @@ html, body {
   display: block;
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #1e8f7a, #5dffd2 55%, #fff6a8);
+  background: #2ecf8e;
 }
 .charge.ready > span {
-  background: linear-gradient(90deg, #ffe56a, #fffef2);
+  background: #fff3a1;
 }
 .hud-actions { gap: 8px; }
 button {

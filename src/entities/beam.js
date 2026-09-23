@@ -6,8 +6,8 @@ window.Beam = function (x, y, dirX, dirY, width, damage) {
   this.w = width;
   this.len = 1600;
   this.damage = damage;
-  this.life = 0.18;
-  this.maxLife = 0.18;
+  this.life = 0.32;
+  this.maxLife = 0.32;
   this.alive = true;
   this.hit = {};
 };
@@ -36,5 +36,8 @@ Beam.prototype.draw = function (ctx) {
   grd.addColorStop(1, "rgba(126,240,255,0)");
   ctx.fillStyle = grd;
   ctx.fillRect(0, -this.w / 2, 520, this.w);
+  ctx.globalAlpha = 0.9 * alpha;
+  ctx.fillStyle = "#fffef2";
+  ctx.fillRect(0, -6, 520, 12);
   ctx.restore();
 };
